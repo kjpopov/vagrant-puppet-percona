@@ -1,0 +1,23 @@
+#!/bin/bash
+
+SQL1=\
+"'DROP DATABASE example;
+
+CREATE DATABASE IF NOT EXISTS example;
+
+CREATE TABLE example.animals (
+     id MEDIUMINT NOT NULL AUTO_INCREMENT,
+     rndval CHAR(30) NOT NULL,
+     PRIMARY KEY (id)
+);
+
+INSERT INTO example.animals (rndval) VALUES (RAND()),(RAND()),(RAND());'"
+
+
+echo "Droping and creating example database with random values on the MASTER"
+vagrant ssh pdb1 -c "sudo mysql --defaults-file=/root/.my.cnf -e $SQL1"
+echo "Waiting 5 sec for the SLAVE to replicate"
+sleep 5
+echo "Listing example table contents from SLAVE"
+vagrant ssh pdb2 -c "sudo mysql --defaults-file=/root/.my.cnf -e 'SELECT * FROM example.animals;'"
+echo "Great now run $0 again and if your random values are diferend your replication is working ;)"

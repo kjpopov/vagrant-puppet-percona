@@ -1,0 +1,8 @@
+name    'percona'
+version '0.0.1'
+source 'https://github.com/kjpopov'
+author 'kjpopov'
+license 'Apache License, Version 2.0'
+summary 'Puppet module for percona'
+description 'Puppet module for percona configuration'
+project_page 'https://github.com/kjpopov'

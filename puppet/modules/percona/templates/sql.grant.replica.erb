@@ -1,0 +1,7 @@
+#####
+# File managed by Puppet 
+#####
+
+GRANT REPLICATION SLAVE ON *.* 
+TO '<%= @replica_user %>'@'<%= @slave_ip %>' 
+IDENTIFIED BY '<%= @replica_pass %>';
