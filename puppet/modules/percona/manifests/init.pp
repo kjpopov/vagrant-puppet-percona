@@ -21,6 +21,7 @@ class percona (
   package { $percona_packages: ensure => 'installed' }
   file { '/root/.my.cnf' : 
     content => template('percona/root.my.cnf.erb'),
+    ensure => present,
     owner => root,
     group => root 
   }
