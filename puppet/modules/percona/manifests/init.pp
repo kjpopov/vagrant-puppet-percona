@@ -54,7 +54,7 @@ class percona (
           command => "mysqladmin -u root password \"$root_password\"",
           path    => ["/usr/bin"],
           onlyif  => "mysqladmin -u root status 2>&1 > /dev/null",
-          require => Service [$percona_service]
+          require => Service[$percona_service]
       }
   }
   
