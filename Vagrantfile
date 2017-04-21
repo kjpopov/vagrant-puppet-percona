@@ -10,11 +10,15 @@ Vagrant.configure("2") do |config|
     vb.memory = "1536"
   end
 
+  config.ssh.insert_key = true
+  config.ssh.forward_agent = true
+
   config.vm.provision "shell", inline: <<-SHELL
     # Install Percona Server
     if [ $(dpkg-query -W -f='${Status}' percona-server-server-5.6 2>/dev/null | grep -c "ok installed") -eq 0 ];
     then
-    sudo apt-key adv --keyserver keys.gnupg.net --recv-keys 1C4CBDCDCD2EFD2A
+    apt-key adv --keyserver keys.gnupg.net --recv-keys 8507EFA5
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8507EFA5
     sudo bash -c 'echo deb http://repo.percona.com/apt trusty main >> /etc/apt/sources.list'
     sudo bash -c 'echo deb-src http://repo.percona.com/apt trusty main >> /etc/apt/sources.list'
     sudo apt-get update
@@ -27,7 +31,7 @@ Vagrant.configure("2") do |config|
   SHELL
 
   config.vm.define "pdb1" do |pdb1|
-    pdb1.vm.box = "Ubuntu1404DailyCloud"
+    pdb1.vm.box = "ubuntu/xenial64"
     pdb1.vm.hostname = "pdb1"
     pdb1.vm.network "private_network", ip: "10.0.5.55"
     pdb1.vm.provision "puppet" do |puppet|
@@ -39,7 +43,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "pdb2" do |pdb2|
-    pdb2.vm.box = "Ubuntu1404DailyCloud"
+    pdb2.vm.box = "ubuntu/xenial64"
     pdb2.vm.hostname = "pdb2"
     pdb2.vm.network "private_network", ip: "10.0.5.56"
     pdb2.vm.provision "puppet" do |puppet|
@@ -49,5 +53,5 @@ Vagrant.configure("2") do |config|
       puppet.options = "--verbose --show_diff"
     end
   end
-  
+
 end
